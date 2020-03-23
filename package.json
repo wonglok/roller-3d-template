@@ -25,6 +25,9 @@
     "build": "rollup -c",
     "watch": "rollup -c -w",
     "dev": "npm-run-all --parallel start watch",
-    "start": "serve public"
+    "start": "serve public",
+    "github": "git add .; git commit -am \"github backup\"; git push -u origin master",
+    "deploy": "npm run build; npm run netlify; npm run github; ",
+    "netlify": "netlify deploy --dir=\"./public\" --prod"
   }
 }

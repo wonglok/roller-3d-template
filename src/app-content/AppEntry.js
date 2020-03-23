@@ -3,7 +3,7 @@ import { Scene } from 'three'
 import { html, render } from 'lit-html'
 
 export class App extends O3D {
-  refresh () {
+  tree () {
     render(html`
       <style>
         :host {
@@ -36,6 +36,11 @@ export class App extends O3D {
     this.resources = {}
     this.refresh()
   }
+
+  refresh () {
+    this.tree()
+  }
+
   setup () {
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
     this.mounter = this.$refs.mounter
@@ -50,6 +55,7 @@ export class App extends O3D {
       this.renderer.render(this.scene, this.camera)
     })
   }
+
   add () {
     this.scene.add(this.o3d)
   }

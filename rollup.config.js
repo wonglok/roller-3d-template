@@ -16,7 +16,7 @@ export default {
 		sourcemap: true
 	},
 	plugins: [
-		livereload('public'),
+		!production && livereload('public'),
 		postcss({
 			extract: true,
       plugins: [
