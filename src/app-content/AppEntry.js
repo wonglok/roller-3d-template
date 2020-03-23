@@ -19,7 +19,7 @@ export class App extends O3D {
 
       <gl-o3d layout="wrapper">
         <gl-o3d>
-          <gl-box velocity="0.1" color="#ff00ff"></gl-box>
+          <gl-box velocity="0.01" color="#ff00ff"></gl-box>
           <gl-box velocity="-0.01" color="#0000ff"></gl-box>
         </gl-o3d>
       </gl-o3d>
