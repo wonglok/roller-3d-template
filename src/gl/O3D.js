@@ -11,20 +11,17 @@ export const castDownEvent = (vm, ev, data) => {
 
 let parent = (vm) => vm.parentElement || vm.getRootNode().host
 
-let getVal = (n, key) => n && n[key]
+// let getVal = (n, key) => n && n[key]
 
 let lookup = (vm, key) => {
-  let n = parent(vm)
-  let val = getVal(n, key)
-  if (val) {
-    return val
+  if (parent(vm) && parent(vm)[key]) {
+    return parent(vm)[key]
   } else {
-    try {
-      let upper = parent(n)
-      return lookup(upper, key)
-    } catch (e) {
+    vm = parent(vm)
+    if (!vm) {
       return false
     }
+    return lookup(vm, key)
   }
 }
 
@@ -43,6 +40,9 @@ export class O3D extends HTMLElement {
     })
     this._ready = false
     this._eventCleaners = []
+    this._name = this.constructor.name
+
+    // Public APIs
     this.props = {}
     this.o3d = new Object3D()
   }
@@ -75,28 +75,24 @@ export class O3D extends HTMLElement {
 
   connectedCallback() {
     if (this.isConnected) {
-      if (!this.name) {
-        this.name = 'O3D'
-      }
-
       if (this.setup) {
-        console.log(this.name, 'setup')
+        console.log(this._name, 'setup')
         this.setup()
       }
 
       if (this.add) {
-        console.log(this.name, 'add to myself')
+        console.log(this._name, 'add to myself')
         this.add()
       }
 
       let parentO3D = this.lookup('o3d')
       if (parentO3D) {
-        console.log(this.name, 'add to parent', this.$parent.name)
+        console.log(this._name, 'add to parent', this.$parent._name)
         parentO3D.add(this.o3d)
       }
 
       if (this.base) {
-        console.log(this.name, 'loop init')
+        console.log(this._name, 'loop init')
         this.base.onInit()
       }
 
@@ -110,18 +106,18 @@ export class O3D extends HTMLElement {
   disconnectedCallback() {
     if (!this.isConnected) {
       if (this.remove) {
-        console.log(this.name, 'remove')
+        console.log(this._name, 'remove')
         this.remove()
       }
 
       let parentO3D = this.lookup('o3d')
       if (parentO3D) {
-        console.log(this.name, 'add to parent', this.$parent.name)
+        console.log(this._name, 'add to parent', this.$parent._name)
         parentO3D.remove(this.o3d)
       }
 
       if (this.base) {
-        console.log(this.name, 'loop teardown')
+        console.log(this._name, 'loop teardown')
         this.base.onTearDown()
       }
 
