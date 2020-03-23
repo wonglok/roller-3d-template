@@ -17,6 +17,7 @@ export class Box extends O3D {
     this.mat = new MeshBasicMaterial({ color: new Color(this.props.color) })
     this.item = new LineSegments(this.geo, this.mat)
     this.velocity = 0.16
+
     this.lookup('base').onLoop(() => {
       this.item.rotateX(this.velocity)
     })

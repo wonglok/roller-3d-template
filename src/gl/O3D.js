@@ -42,7 +42,7 @@ export class O3D extends HTMLElement {
       }
     })
     this._ready = false
-    this._cleaners = []
+    this._eventCleaners = []
     this.props = {}
     this.o3d = new Object3D()
   }
@@ -57,7 +57,7 @@ export class O3D extends HTMLElement {
 
   $on (ev, handler) {
     this.addEventListener(ev, handler)
-    this._cleaners.push(() => {
+    this._eventCleaners.push(() => {
       this.removeEventListener(ev, handler)
     })
   }
@@ -125,8 +125,8 @@ export class O3D extends HTMLElement {
         this.base.onTearDown()
       }
 
-      if (this._cleaners) {
-        this._cleaners.forEach(c => c())
+      if (this._eventCleaners) {
+        this._eventCleaners.forEach(c => c())
       }
     }
   }

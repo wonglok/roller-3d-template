@@ -3,7 +3,7 @@ import { Scene } from 'three'
 import { html, render } from 'lit-html'
 
 export class App extends O3D {
-  renderDOM () {
+  refresh () {
     render(html`
       <style>
         :host {
@@ -34,9 +34,8 @@ export class App extends O3D {
     this.name = 'App'
     this.base = makeBase()
     this.resources = {}
-    this.renderDOM()
+    this.refresh()
   }
-
   setup () {
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
     this.mounter = this.$refs.mounter
