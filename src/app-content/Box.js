@@ -16,7 +16,7 @@ export class Box extends O3D {
     this.velocity = 0
     this.color = new Color(this.props.color)
 
-    this.geo = new BoxBufferGeometry(50, 50, 50, 3, 3, 3)
+    this.geo = new BoxBufferGeometry(50, 50, 50, 15, 15, 15)
     this.mat = new MeshBasicMaterial({ color: this.color })
     this.item = new LineSegments(this.geo, this.mat)
 
