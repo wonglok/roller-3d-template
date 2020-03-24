@@ -3,23 +3,20 @@ import { Scene } from 'three'
 import { html, render } from 'lit-html'
 
 export class Boxes extends O3D {
-  tree () {
+  syncDOM () {
     render(html`
       <gl-o3d>
-        <gl-box velocity="0.02" color="#0f00ff"></gl-box>
-        <gl-box velocity="-0.03" color="#ff0000"></gl-box>
+        <gl-box velocity="0.012" color="#0f00ff"></gl-box>
+        <gl-box velocity="0.013" color="#ff0000"></gl-box>
       </gl-o3d>
     `, this.shadowRoot)
   }
 
-  refresh () {
-    this.tree()
+  onRefreshProps () {
+    this.syncDOM()
   }
 
   setup () {
-    this.lookup('base').onLoop(() => {
-
-    })
   }
 
   add () {

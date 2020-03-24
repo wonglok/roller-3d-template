@@ -1,6 +1,6 @@
 import { O3D } from '../gl/index.js'
-import { Mesh, BoxBufferGeometry, MeshBasicMaterial, Color, LineSegments } from 'three'
-import { html, render } from 'lit-html'
+import { BoxBufferGeometry, MeshBasicMaterial, Color, LineSegments } from 'three'
+// import { html, render } from 'lit-html'
 
 export class Box extends O3D {
   static get observedAttributes() {
@@ -23,7 +23,7 @@ export class Box extends O3D {
     })
   }
 
-  refresh () {
+  onRefreshProps () {
     if (!this.props) {
       return
     }

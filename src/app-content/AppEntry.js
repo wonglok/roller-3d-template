@@ -3,7 +3,7 @@ import { Scene } from 'three'
 import { html, render } from 'lit-html'
 
 export class App extends O3D {
-  tree () {
+  syncDOM () {
     render(html`
       <style>
         :host {
@@ -23,24 +23,24 @@ export class App extends O3D {
       <gl-o3d layout="wrapper">
         <gl-o3d>
           <gl-boxes></gl-boxes>
-          <gl-box velocity="0.01" color="#ff00ff"></gl-box>
-          <gl-box velocity="-0.01" color="#0000ff"></gl-box>
+
+          <gl-box velocity="0.010" color="#ff00ff"></gl-box>
+          <gl-box velocity="0.011" color="#0000ff"></gl-box>
         </gl-o3d>
       </gl-o3d>
 
       <div id="mounter"></div>
-
     `, this.shadowRoot)
   }
 
-  refresh () {
-    this.tree()
+  onRefreshProps () {
+    this.syncDOM()
   }
 
   setup () {
     this.base = makeBase()
     this.resources = {}
-    this.refresh()
+    this.syncDOM()
 
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
     this.mounter = this.$refs.mounter

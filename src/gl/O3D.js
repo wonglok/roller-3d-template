@@ -96,8 +96,8 @@ export class O3D extends HTMLElement {
         this.base.onInit()
       }
 
-      if (this.refresh) {
-        this.refresh()
+      if (this.onRefreshProps) {
+        this.onRefreshProps()
         this._ready = true
       }
     }
@@ -127,13 +127,13 @@ export class O3D extends HTMLElement {
     }
   }
 
-  refresh () {
+  onRefreshProps () {
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
     this.props[name] = newValue
     if (this._ready) {
-      this.refresh()
+      this.onRefreshProps()
     }
     // this.props[name] = newValue
     // console.log(name, 'change attr', oldValue, newValue)
