@@ -8,17 +8,22 @@ export class Renderer {
       antialias: true,
       alpha: true
     })
+
     // renderer.domElement.style.marginBottom = '-6px'
-    base.getWidth = () => {
+    base.getWidth = (rect) => {
       if (makeGIF) {
         return 256
+      } else if (rect) {
+        return rect.width
       } else {
         return window.innerWidth
       }
     }
-    base.getHeight = () => {
+    base.getHeight = (rect) => {
       if (makeGIF) {
         return 256
+      } else if (rect) {
+        return rect.height
       } else {
         return window.innerHeight
       }
@@ -31,9 +36,9 @@ export class Renderer {
       }
     }
 
-    let resizer = () => {
+    let resizer = (rect) => {
       let dpi = base.getDPI() // window.devicePixelRatio || 2.0;
-      renderer.setSize(base.getWidth(), base.getHeight())
+      renderer.setSize(base.getWidth(rect), base.getHeight(rect))
       renderer.setPixelRatio(dpi)
     }
     // resizer()

@@ -23,9 +23,6 @@ export class App extends O3D {
       <gl-o3d layout="wrapper">
         <gl-o3d>
           <gl-boxes></gl-boxes>
-
-          <gl-box velocity="0.010" color="#ff00ff"></gl-box>
-          <gl-box velocity="0.011" color="#0000ff"></gl-box>
         </gl-o3d>
       </gl-o3d>
 
@@ -43,8 +40,8 @@ export class App extends O3D {
     this.syncDOM()
 
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
-    this.mounter = this.$refs.mounter
-    this.mounter.appendChild(this.renderer.domElement)
+    this.$refs.mounter.appendChild(this.renderer.domElement)
+    this.base.mounter = this.$refs.mounter
 
     this.camera = new PCamera({ base: this.base })
     this.camera.position.z = 200

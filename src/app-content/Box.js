@@ -19,7 +19,9 @@ export class Box extends O3D {
     this.velocity = 0.1
 
     this.lookup('base').onLoop(() => {
-      this.item.rotateX(this.velocity)
+      let time = window.performance.now() * 0.0001
+      this.item.rotateX(0.01 + 0.5 * this.velocity * Math.abs(Math.sin(time)))
+      this.item.rotateY(0.01 + 0.5 * this.velocity * Math.abs(Math.sin(time)))
     })
   }
 

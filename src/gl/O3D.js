@@ -27,7 +27,7 @@ let lookup = (vm, key) => {
 
 export class O3D extends HTMLElement {
   static get observedAttributes() {
-    return ['layout']
+    return ['layout', 'hidden']
   }
 
   constructor() {
@@ -81,7 +81,7 @@ export class O3D extends HTMLElement {
       }
 
       if (this.add) {
-        console.log(this._name, 'add to myself')
+        console.log(this._name, 'add hook')
         this.add()
       }
 
@@ -98,15 +98,26 @@ export class O3D extends HTMLElement {
 
       if (this.onRefreshProps) {
         this.onRefreshProps()
+        this.onRefreshInternalProps()
         this._ready = true
       }
+    }
+  }
+
+  onRefreshInternalProps () {
+    if (this.hasAttribute('visible')) {
+      let visible = true
+      if (this.props.visible === 'false') {
+        visible = false
+      }
+      this.o3d.visible = visible
     }
   }
 
   disconnectedCallback() {
     if (!this.isConnected) {
       if (this.remove) {
-        console.log(this._name, 'remove')
+        console.log(this._name, 'remove hook')
         this.remove()
       }
 
@@ -134,6 +145,7 @@ export class O3D extends HTMLElement {
     this.props[name] = newValue
     if (this._ready) {
       this.onRefreshProps()
+      this.onRefreshInternalProps()
     }
     // this.props[name] = newValue
     // console.log(name, 'change attr', oldValue, newValue)

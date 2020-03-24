@@ -2,6 +2,14 @@ export const getID = () => '_' + (100000000.0 * Math.random()).toFixed(0) + ''
 
 export const makeBase = () => {
   let env = {
+    _mounter: document.body,
+    get mounter () {
+      return env._mounter
+    },
+    set mounter (v) {
+      env._mounter = v
+      runResize()
+    },
     refs: {},
     stats: false,
     waitKN: (kn) => {
@@ -73,8 +81,9 @@ export const makeBase = () => {
 
   let tout = 0
   let runResize = () => {
+    let rect = env.mounter.getBoundingClientRect()
     for (var resizeKN in env._.resize) {
-      env._.resize[resizeKN]()
+      env._.resize[resizeKN](rect)
     }
   }
   let resize = () => {
