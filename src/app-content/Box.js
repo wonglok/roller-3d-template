@@ -16,13 +16,16 @@ export class Box extends O3D {
   }
 
   setup () {
-    this.velocity = 0
+    // vars
     this.color = new Color(this.props.color)
+    this.velocity = 0
 
+    // item
     this.geo = new BoxBufferGeometry(100, 100, 100, 30, 30, 30)
     this.mat = new MeshBasicMaterial({ color: this.color, transparent: true, opacity: 0.5 })
     this.item = new LineSegments(this.geo, this.mat)
 
+    // looper
     this.lookup('base').onLoop(() => {
       let time = window.performance.now() * 0.001
 
