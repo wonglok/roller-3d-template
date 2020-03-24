@@ -21,9 +21,7 @@ export class App extends O3D {
       </style>
 
       <gl-o3d layout="wrapper">
-        <gl-o3d>
-          <gl-boxes></gl-boxes>
-        </gl-o3d>
+        <gl-boxes></gl-boxes>
       </gl-o3d>
 
       <div id="mounter"></div>

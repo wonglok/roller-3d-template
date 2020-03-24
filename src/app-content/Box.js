@@ -7,16 +7,19 @@ export class Box extends O3D {
     return ['color', 'velocity']
   }
 
-  constructor () {
-    super()
-    this.name = 'Box'
+  onRefreshProps () {
+    if (!this.props) {
+      return
+    }
+    this.velocity = Number(this.props.velocity)
+    this.color.setStyle(this.props.color)
   }
 
   setup () {
     this.velocity = 0
     this.color = new Color(this.props.color)
 
-    this.geo = new BoxBufferGeometry(50, 50, 50, 15, 15, 15)
+    this.geo = new BoxBufferGeometry(100, 100, 100, 30, 30, 30)
     this.mat = new MeshBasicMaterial({ color: this.color })
     this.item = new LineSegments(this.geo, this.mat)
 
@@ -29,14 +32,6 @@ export class Box extends O3D {
       this.item.rotation.x = time + 5.0 * this.velocity * Math.cos(Math.sin(time))
       this.item.rotation.y = time + 5.0 * this.velocity * Math.cos(Math.sin(time))
     })
-  }
-
-  onRefreshProps () {
-    if (!this.props) {
-      return
-    }
-    this.velocity = Number(this.props.velocity)
-    this.color.setStyle(this.props.color)
   }
 
   add () {
