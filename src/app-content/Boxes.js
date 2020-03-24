@@ -4,13 +4,11 @@ import { html, render } from 'lit-html'
 
 export class Boxes extends O3D {
   syncDOM () {
-    let timer = this.timer
     render(html`
       <gl-o3d>
-        <gl-box velocity=${timer + 0.001} color="#ff00ff"></gl-box>
-        <gl-box velocity=${timer + 0.002} color="#0000ff"></gl-box>
-        <gl-box velocity=${timer + 0.003} color="#0f00ff"></gl-box>
-        <gl-box velocity=${timer + 0.004} color="#ff0000"></gl-box>
+        <gl-box velocity=${0.01} color="#ff0000"></gl-box>
+        <gl-box velocity=${0.02} color="#00ff00"></gl-box>
+        <gl-box velocity=${0.03} color="#0f00ff"></gl-box>
       </gl-o3d>
     `, this.shadowRoot)
   }
@@ -20,11 +18,6 @@ export class Boxes extends O3D {
   }
 
   setup () {
-    this.timer = 0
-    this.lookup('base').onLoop(() => {
-      this.timer = Math.sin(window.performance.now() * 0.001) * 0.01
-      this.syncDOM()
-    })
   }
 
   add () {
