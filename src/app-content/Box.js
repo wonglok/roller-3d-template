@@ -20,7 +20,7 @@ export class Box extends O3D {
     this.color = new Color(this.props.color)
 
     this.geo = new BoxBufferGeometry(100, 100, 100, 30, 30, 30)
-    this.mat = new MeshBasicMaterial({ color: this.color })
+    this.mat = new MeshBasicMaterial({ color: this.color, transparent: true, opacity: 0.5 })
     this.item = new LineSegments(this.geo, this.mat)
 
     this.lookup('base').onLoop(() => {

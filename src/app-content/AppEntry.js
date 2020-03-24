@@ -38,8 +38,8 @@ export class App extends O3D {
     this.syncDOM()
 
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
-    this.$refs.mounter.appendChild(this.renderer.domElement)
     this.base.mounter = this.$refs.mounter
+    this.$refs.mounter.appendChild(this.renderer.domElement)
 
     this.camera = new PCamera({ base: this.base })
     this.camera.position.z = 200
