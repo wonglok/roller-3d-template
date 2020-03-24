@@ -7,10 +7,10 @@ export class Boxes extends O3D {
     let timer = this.timer
     render(html`
       <gl-o3d>
-        <gl-box velocity="${timer + 0.001}" color="#ff00ff"></gl-box>
-        <gl-box velocity="${timer + 0.002}" color="#0000ff"></gl-box>
-        <gl-box velocity="${timer + 0.003}" color="#0f00ff"></gl-box>
-        <gl-box velocity="${timer + 0.004}" color="#ff0000"></gl-box>
+        <gl-box velocity=${timer + 0.001} color="#ff00ff"></gl-box>
+        <gl-box velocity=${timer + 0.002} color="#0000ff"></gl-box>
+        <gl-box velocity=${timer + 0.003} color="#0f00ff"></gl-box>
+        <gl-box velocity=${timer + 0.004} color="#ff0000"></gl-box>
       </gl-o3d>
     `, this.shadowRoot)
   }
