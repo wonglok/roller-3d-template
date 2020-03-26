@@ -32,30 +32,34 @@ export class App extends O3D {
     this.syncDOM()
   }
 
-  onConstructor () {
-
-  }
-
   setup () {
+    // Setup loop
     this.base = makeBase()
     this.resources = {}
+    // create dom
     this.syncDOM()
+    // get mounter
+    this.mounter = this.$refs.mounter
+    this.base.mounter = this.mounter
 
+    // insert renderer
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
+    this.mounter.appendChild(this.renderer.domElement)
 
-    const mounter = this.$refs.mounter
-    this.base.mounter = mounter
-    this.base.stats = new Stats({ mounter: mounter })
-    mounter.appendChild(this.renderer.domElement)
-
+    // prepare camera
     this.camera = new PCamera({ base: this.base })
     this.camera.position.z = 200
 
+    // prepare scene
     this.scene = new Scene()
 
+    // prepare render loop
     this.base.onLoop(() => {
       this.renderer.render(this.scene, this.camera)
     })
+
+    // statistics
+    this.base.stats = new Stats({ mounter: this.mounter })
   }
 
   add () {
