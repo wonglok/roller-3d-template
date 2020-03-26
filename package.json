@@ -19,6 +19,7 @@
     "lit-html": "^1.2.1",
     "lodash": "^4.17.15",
     "rollup-plugin-livereload": "^1.1.0",
+    "stats.js": "^0.17.0",
     "three": "^0.114.0",
     "uhtml": "^1.8.1"
   },

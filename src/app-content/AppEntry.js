@@ -1,4 +1,4 @@
-import { Renderer, PCamera, makeBase, O3D } from '../gl'
+import { Renderer, PCamera, makeBase, O3D, Stats } from '../gl'
 import { Scene } from 'three'
 import { html, render } from 'lit-html'
 
@@ -39,6 +39,7 @@ export class App extends O3D {
 
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
     this.base.mounter = this.$refs.mounter
+    this.base.stats = new Stats()
     this.$refs.mounter.appendChild(this.renderer.domElement)
 
     this.camera = new PCamera({ base: this.base })

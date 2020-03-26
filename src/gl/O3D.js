@@ -48,6 +48,12 @@ export class O3D extends HTMLElement {
     // Public APIs
     this.props = {}
     this.o3d = new Object3D()
+    this.size = {
+      width: 0,
+      height: 0,
+      depth: 0,
+      radius: 0
+    }
   }
 
   get $parent () {
@@ -127,6 +133,47 @@ export class O3D extends HTMLElement {
     }
     this.onSyncFormula()
   }
+
+  get right () {
+    let val = 0
+    try {
+      val = Parser.evaluate(`screen.width * 0.5 - scaleX * width * 0.5 - padding`, this)
+    } catch (e) {
+      console.log(e)
+    }
+    return val
+  }
+
+  get left () {
+    let val = 0
+    try {
+      val = Parser.evaluate(`screen.width * -0.5 + scaleX * width * 0.5 + padding`, this)
+    } catch (e) {
+      console.log(e)
+    }
+    return val
+  }
+
+  get top () {
+    let val = 0
+    try {
+      val = Parser.evaluate(`screen.height * 0.5 + scaleY * height * -0.5 - padding`, this)
+    } catch (e) {
+      console.log(e)
+    }
+    return val
+  }
+
+  get bottom () {
+    let val = 0
+    try {
+      val = Parser.evaluate(`screen.height * -0.5 + scaleY * height * 1 - padding`, this)
+    } catch (e) {
+      console.log(e)
+    }
+    return val
+  }
+
 
   get screen () {
     return getScreen({ camera: this.lookup('camera'), depth: this.o3d.position.z })
