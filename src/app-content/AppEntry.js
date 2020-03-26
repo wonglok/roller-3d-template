@@ -59,7 +59,9 @@ export class App extends O3D {
     })
 
     // statistics
-    this.base.stats = new Stats({ mounter: this.mounter })
+    if (window.isDev) {
+      this.base.stats = new Stats({ mounter: this.mounter })
+    }
   }
 
   add () {

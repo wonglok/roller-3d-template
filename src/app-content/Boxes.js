@@ -22,7 +22,8 @@ export class Boxes extends O3D {
       let time = window.performance.now() * 0.001
       this.layouts = {
         mybox: {
-          px: `${50} * ${Math.sin(time * 3.141592)}`
+          px: `screen.min * 0.5 * ${((Math.sin(time * 3.141592 * 0.1) * Math.sin(time * 3.141592 * 0.1)) - 0.5)}`,
+          py: `screen.min * 0.5 * ${Math.sin(time * 3.141592 * 0.1) * Math.cos(time * 3.141592 * 0.1)}`
         }
       }
     })

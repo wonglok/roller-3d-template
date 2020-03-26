@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import livereload from 'rollup-plugin-livereload';
+import replace from '@rollup/plugin-replace';
 
 // `npm run build` -> `production` is true
 // `npm run dev` -> `production` is false
@@ -17,6 +18,8 @@ export default {
 	},
 	plugins: [
 		!production && livereload('public'),
+		production && replace({ 'window.isDev': 'false' }),
+		!production && replace({ 'window.isDev': 'true' }),
 		postcss({
 			extract: true,
       plugins: [
