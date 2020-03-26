@@ -1,4 +1,7 @@
+import { getScreen } from './Screen'
 import { Object3D } from 'three'
+import { Parser } from 'expr-eval'
+
 // import compose from "lodash/fp/compose"
 export const castDownEvent = (vm, ev, data) => {
   if (vm && vm.o3d.children.length > 0) {
@@ -27,7 +30,7 @@ let lookup = (vm, key) => {
 
 export class O3D extends HTMLElement {
   static get observedAttributes() {
-    return ['layout', 'hidden']
+    return ['layout', 'hidden', 't']
   }
 
   constructor() {
@@ -73,6 +76,10 @@ export class O3D extends HTMLElement {
     return this.getAttribute(key)
   }
 
+  hasAttr (key) {
+    return this.hasAttribute(key)
+  }
+
   connectedCallback() {
     if (this.isConnected) {
       if (this.setup) {
@@ -101,6 +108,12 @@ export class O3D extends HTMLElement {
         this.onRefreshInternalProps()
         this._ready = true
       }
+
+      if (this.hasAttr('animated')) {
+        this.lookup('base').onLoop(() => {
+          this.onRefreshInternalProps()
+        })
+      }
     }
   }
 
@@ -112,6 +125,45 @@ export class O3D extends HTMLElement {
       }
       this.o3d.visible = visible
     }
+    this.onSyncFormula()
+  }
+
+  get screen () {
+    return getScreen({ camera: this.lookup('camera'), depth: this.o3d.position.z })
+  }
+
+  get layout () {
+    let layoutMap = this.lookup('layouts')
+    let layoutName = this.attr('layout')
+    if (layoutMap && layoutName && layoutMap[layoutName]) {
+      return layoutMap[layoutName]
+    } else {
+      return {}
+    }
+  }
+
+  onSyncFormula () {
+    let run = (fnc) => {
+      try {
+        fnc()
+      } catch (e) {
+        console.log(this._name, e)
+      }
+    }
+
+    // console.log(this.layout)
+
+    run(() => { this.o3d.rotation.x = Parser.evaluate('' + (this.layout.rx || '0'), this) })
+    run(() => { this.o3d.rotation.y = Parser.evaluate('' + (this.layout.ry || '0'), this) })
+    run(() => { this.o3d.rotation.z = Parser.evaluate('' + (this.layout.rz || '0'), this) })
+
+    run(() => { this.scaleX = this.o3d.scale.x = Parser.evaluate('' + (this.layout.sx || '1'), this) })
+    run(() => { this.scaleY = this.o3d.scale.y = Parser.evaluate('' + (this.layout.sy || '1'), this) })
+    run(() => { this.scaleZ = this.o3d.scale.z = Parser.evaluate('' + (this.layout.sz || '1'), this) })
+
+    run(() => { this.o3d.position.x = Parser.evaluate('' + (this.layout.px || '0'), this) })
+    run(() => { this.o3d.position.y = Parser.evaluate('' + (this.layout.py || '0'), this) })
+    run(() => { this.o3d.position.z = Parser.evaluate('' + (this.layout.pz || '0'), this) })
   }
 
   disconnectedCallback() {
