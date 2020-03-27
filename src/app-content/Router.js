@@ -4,17 +4,12 @@ export class Router extends O3D {
   syncDOM () {
     if (this.page === '' || this.page === '/') {
       render(html`
-      <page-home></page-home>
+        <page-home></page-home>
     `, this.shadowRoot)
     } else if (this.page === '/red') {
       render(html`
-        <gl-o3d animated layout="flyingBox">
-          <gl-box velocity=${0.02} color="#00ff00"></gl-box>
-        </gl-o3d>
-        <gl-o3d animated layout="flyingBox">
-          <gl-box velocity=${0.078} color="#00ff00"></gl-box>
-        </gl-o3d>
-        `, this.shadowRoot)
+        <page-red></page-red>
+      `, this.shadowRoot)
     } else if (this.page === '/404') {
       render(html`
       <page-404 from=${this.from}></page-404>

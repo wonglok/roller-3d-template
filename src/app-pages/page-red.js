@@ -9,15 +9,7 @@ export class Page extends O3D {
   syncDOM () {
     render(html`
       <gl-o3d animated layout="moving">
-        <gl-o3d>
-          <gl-box velocity=${0.01} color="#ff0000"></gl-box>
-        </gl-o3d>
-        <gl-o3d>
-          <gl-box velocity=${0.02} color="#00ff00"></gl-box>
-        </gl-o3d>
-        <gl-o3d>
-          <gl-box velocity=${0.03} color="#0f00ff"></gl-box>
-        </gl-o3d>
+        <gl-box velocity=${0.01} color="#ff0000"></gl-box>
       </gl-o3d>
     `, this.shadowRoot)
   }
@@ -44,4 +36,4 @@ export class Page extends O3D {
   }
 }
 
-window.customElements.define('page-home', Page);
+window.customElements.define('page-red', Page);
