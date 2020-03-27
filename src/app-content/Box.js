@@ -1,6 +1,5 @@
 import { O3D } from '../gl/index.js'
 import { BoxBufferGeometry, MeshBasicMaterial, Color, LineSegments } from 'three'
-// import { html, render } from 'lit-html'
 
 export class Box extends O3D {
   static get observedAttributes () {
@@ -20,31 +19,44 @@ export class Box extends O3D {
     this.color = new Color(this.props.color)
     this.velocity = 0
 
-    // item
-    this.geo = new BoxBufferGeometry(100, 100, 100, 30, 30, 30)
-    this.mat = new MeshBasicMaterial({ color: this.color, transparent: true, opacity: 0.5 })
-    this.item = new LineSegments(this.geo, this.mat)
+    // renderable
+    this.geometry = new BoxBufferGeometry(100, 100, 100, 30, 30, 30)
+    this.material = new MeshBasicMaterial({ color: this.color, transparent: true, opacity: 0.5 })
+    this.renderable = new LineSegments(this.geometry, this.material)
+
+    // geometry
+    this.geometry.computeBoundingSphere()
+    this.geometry.computeBoundingBox()
+
+    // size
+    this.$parent.$emit('size', {
+      radius: this.geometry.boundingSphere.radius,
+      width: Math.abs(this.geometry.boundingBox.min.x) + Math.abs(this.geometry.boundingBox.max.x),
+      height: Math.abs(this.geometry.boundingBox.min.y) + Math.abs(this.geometry.boundingBox.max.y),
+      depth: Math.abs(this.geometry.boundingBox.min.z) + Math.abs(this.geometry.boundingBox.max.z)
+    })
 
     // looper
     this.lookup('base').onLoop(() => {
       let time = window.performance.now() * 0.001
 
       this.color.offsetHSL(0.01, 0.0, 0.0);
-      this.mat.color = this.color;
+      this.material.color = this.color;
 
-      this.item.rotation.x = time + 5.0 * this.velocity * Math.cos(Math.sin(time))
-      this.item.rotation.y = time + 5.0 * this.velocity * Math.cos(Math.sin(time))
+      this.renderable.rotation.x = time + 5.0 * this.velocity * Math.cos(Math.sin(time))
+      this.renderable.rotation.y = time + 5.0 * this.velocity * Math.cos(Math.sin(time))
     })
   }
 
   add () {
-    this.o3d.add(this.item)
+    this.o3d.add(this.renderable)
   }
 
   remove () {
-    this.o3d.remove(this.item)
-    this.item.geometry.dispose()
-    this.item.material.dispose()
+    this.o3d.remove(this.renderable)
+
+    this.renderable.geometry.dispose()
+    this.renderable.material.dispose()
   }
 }
 

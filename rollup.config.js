@@ -4,6 +4,7 @@ import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
 import livereload from 'rollup-plugin-livereload';
 import replace from '@rollup/plugin-replace';
+// import VuePlugin from 'rollup-plugin-vue'
 
 // `npm run build` -> `production` is true
 // `npm run dev` -> `production` is false
@@ -18,8 +19,6 @@ export default {
 	},
 	plugins: [
 		!production && livereload('public'),
-		production && replace({ 'window.isDev': 'false' }),
-		!production && replace({ 'window.isDev': 'true' }),
 		postcss({
 			extract: true,
       plugins: [
@@ -29,6 +28,9 @@ export default {
     }),
 		resolve(), // tells Rollup how to find date-fns in node_modules
 		commonjs(), // converts date-fns to ES modules
+		// VuePlugin(),
+		production && replace({ 'process.env.NODE_ENV': `'production'` }),
+		!production && replace({ 'process.env.NODE_ENV': `'development'` }),
 		production && terser() // minify, but only in production
 	]
 };

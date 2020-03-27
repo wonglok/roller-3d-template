@@ -1,3 +1,7 @@
+export { Router } from './Router.js'
 export { Boxes } from './Boxes'
 export { Box } from './Box'
-export { App } from './AppEntry'
+export { AppEntry } from './AppEntry'
+export { ScrollCanvas } from './ScrollCanvas/ScrollCanvas'
+import '../app-pages/page-404.js'
+import '../app-pages/page-home.js'

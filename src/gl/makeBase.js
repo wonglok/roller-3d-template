@@ -32,16 +32,19 @@ export const makeBase = () => {
       resize: {},
       clean: {}
     },
-    onLoop: (fn) => {
+    onLoop: async (fn) => {
       let key = getID()
       env._.loop[key] = fn
+
+      await fn()
+
       // cleaner
       return () => {
         env._.loop[key] = () => {}
       }
     },
-    onResize: (fn) => {
-      fn()
+    onResize: async (fn) => {
+      await fn()
       env._.resize[getID()] = fn
     },
     onClean: (fn) => {
@@ -80,10 +83,10 @@ export const makeBase = () => {
   }
 
   let tout = 0
-  let runResize = () => {
+  let runResize = async () => {
     let rect = env.mounter.getBoundingClientRect()
     for (var resizeKN in env._.resize) {
-      env._.resize[resizeKN](rect)
+      await env._.resize[resizeKN](rect)
     }
   }
   let resize = () => {

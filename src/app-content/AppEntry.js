@@ -1,8 +1,9 @@
-import { Renderer, PCamera, makeBase, O3D, Stats } from '../gl'
+import { Renderer, PCamera, makeBase, O3D, Stats, makeScroller } from '../gl'
 import { Scene } from 'three'
 import { html, render } from 'lit-html'
+import Navigo from 'navigo'
 
-export class App extends O3D {
+export class AppEntry extends O3D {
   syncDOM () {
     render(html`
       <style>
@@ -18,13 +19,17 @@ export class App extends O3D {
           height: 100%;
           width: 100%;
         }
+        #stats {
+          position: absolute;
+          top: 0px;
+          right: 0px;
+        }
       </style>
 
-      <gl-o3d>
-        <gl-boxes></gl-boxes>
-      </gl-o3d>
+      <gl-router></gl-router>
 
       <div id="mounter"></div>
+      <div id="stats"></div>
     `, this.shadowRoot)
   }
 
@@ -32,15 +37,31 @@ export class App extends O3D {
     this.syncDOM()
   }
 
+  onMove () {
+
+  }
+
   setup () {
+    // BEFORE MOUNT
     // Setup loop
     this.base = makeBase()
+    this.$router = new Navigo(location.origin)
     this.resources = {}
+
+    // MOUNT
     // create dom
     this.syncDOM()
+
+    // MOUNTED
     // get mounter
     this.mounter = this.$refs.mounter
     this.base.mounter = this.mounter
+    this.limit = {
+      canRun: true,
+      y: 10
+    }
+
+    this.scroller = makeScroller({ base: this.base, mounter: this.mounter, limit: this.limit, onMove: () => { this.onMove() } })
 
     // insert renderer
     this.renderer = new Renderer({ base: this.base, makeGIF: false })
@@ -55,12 +76,24 @@ export class App extends O3D {
 
     // prepare render loop
     this.base.onLoop(() => {
-      this.renderer.render(this.scene, this.camera)
+      if (this.scene) {
+        this.renderer.render(this.scene, this.camera)
+      }
     })
 
     // statistics
-    if (window.isDev) {
-      this.base.stats = new Stats({ mounter: this.mounter })
+    if (process.env.NODE_ENV === 'development') {
+      this.base.stats = new Stats({ mounter: this.$refs.stats })
+    }
+
+    let i = 0
+    window.onclick = () => {
+      if (i%2 === 0) {
+        this.$router.navigate('/red')
+      } else {
+        this.$router.navigate('/')
+      }
+      i++
     }
   }
 
@@ -73,4 +106,4 @@ export class App extends O3D {
   }
 }
 
-window.customElements.define('app-entry', App);
+window.customElements.define('app-entry', AppEntry);

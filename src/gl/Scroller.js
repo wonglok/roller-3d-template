@@ -1,6 +1,6 @@
 
 // can scroll how many pages = limit.y
-export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 1000 }, onMove = () => {} }) => {
+export const makeScroller = ({ base, mounter, limit = { canRun: true, y: 1000 }, onMove = () => {} }) => {
   let state = {
     tsY: 0,
     tdY: 0,
@@ -12,7 +12,7 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
       this.maxY = limit.y
       this.latestVal = v
       this.dampedVal = v
-      base.loop(() => {
+      base.onLoop(() => {
         let diff = (this.latestVal - this.dampedVal) * (60 / 1000)
         this.dampedVal += diff
       })
@@ -39,7 +39,7 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
       SmoothY.value = value
     }, true)
   } else {
-    touchTarget.addEventListener('wheel', (evt) => {
+    mounter.addEventListener('wheel', (evt) => {
       evt.preventDefault()
       if (!limit.canRun) {
         return
@@ -55,14 +55,14 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
       onMove(SmoothY)
     }, { passive: false })
 
-    touchTarget.addEventListener('touchstart', (evt) => {
+    mounter.addEventListener('touchstart', (evt) => {
       evt.preventDefault()
       let t1 = evt.touches[0]
       // console.log(t1)
       state.tsY = t1.pageY
       state.tD = true
     }, { passive: false })
-    touchTarget.addEventListener('touchmove', (evt) => {
+    mounter.addEventListener('touchmove', (evt) => {
       evt.preventDefault()
       if (!limit.canRun) {
         return
@@ -76,16 +76,16 @@ export const makeScroller = ({ base, touchTarget, limit = { canRun: true, y: 100
       }
       onMove(SmoothY)
     }, { passive: false })
-    touchTarget.addEventListener('touchend', (evt) => {
+    mounter.addEventListener('touchend', (evt) => {
       state.tsY = 0
       state.tD = false
     }, { passive: false })
-    touchTarget.addEventListener('touchcancel', (evt) => {
+    mounter.addEventListener('touchcancel', (evt) => {
       state.tsY = 0
       state.tD = false
     }, { passive: false })
 
-    base.loop(() => {
+    base.onLoop(() => {
       if (!limit.canRun) {
         state.tdY = 0
         state.inertiaY = 0

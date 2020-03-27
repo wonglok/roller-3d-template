@@ -29,11 +29,11 @@ let lookup = (vm, key) => {
 }
 
 export class O3D extends HTMLElement {
-  static get observedAttributes() {
-    return ['layout', 'hidden', 't']
+  static get observedAttributes () {
+    return ['layout', 'visible']
   }
 
-  constructor() {
+  constructor () {
     super()
     this.attachShadow({ mode: 'open' })
     this.$refs = new Proxy(this, {
@@ -48,12 +48,18 @@ export class O3D extends HTMLElement {
     // Public APIs
     this.props = {}
     this.o3d = new Object3D()
-    this.size = {
-      width: 0,
-      height: 0,
-      depth: 0,
-      radius: 0
+    this.o3d.visible = false
+
+    this.child = {
+      width: 0.000000000000001,
+      height: 0.000000000000001,
+      depth: 0.000000000000001,
+      radius: 0.000000000000001
     }
+    this.$on('size', ({ detail }) => {
+      this.child = detail
+      this.onSyncFormula()
+    })
   }
 
   get $parent () {
@@ -86,11 +92,11 @@ export class O3D extends HTMLElement {
     return this.hasAttribute(key)
   }
 
-  connectedCallback() {
+  async connectedCallback() {
     if (this.isConnected) {
       if (this.setup) {
         console.log(this._name, 'setup')
-        this.setup()
+        await this.setup()
       }
 
       if (this.add) {
@@ -113,6 +119,7 @@ export class O3D extends HTMLElement {
         this.onRefreshProps()
         this.onRefreshInternalProps()
         this._ready = true
+        this.o3d.visible = true
       }
 
       if (this.hasAttr('animated')) {
@@ -222,7 +229,7 @@ export class O3D extends HTMLElement {
 
       let parentO3D = this.lookup('o3d')
       if (parentO3D) {
-        console.log(this._name, 'add to parent', this.$parent._name)
+        console.log(this._name, 'remove from parent', this.$parent._name)
         parentO3D.remove(this.o3d)
       }
 
