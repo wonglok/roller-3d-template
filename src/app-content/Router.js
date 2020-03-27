@@ -5,14 +5,14 @@ export class Router extends O3D {
     if (this.page === '' || this.page === '/') {
       render(html`
         <page-home></page-home>
-    `, this.shadowRoot)
+      `, this.shadowRoot)
     } else if (this.page === '/red') {
       render(html`
         <page-red></page-red>
       `, this.shadowRoot)
     } else if (this.page === '/404') {
       render(html`
-      <page-404 from=${this.from}></page-404>
+        <page-404 from=${this.from}></page-404>
       `, this.shadowRoot)
     }
   }
@@ -42,7 +42,6 @@ export class Router extends O3D {
     this.$router.on('/red', onArrive).resolve()
     this.$router.notFound(onNotFound).resolve()
     this.$parent.$router = this.$router
-
 
     await this.$router.resolve()
     window.addEventListener('hashchange', () => {

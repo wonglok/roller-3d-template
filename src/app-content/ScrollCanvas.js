@@ -1,4 +1,4 @@
-import { O3D } from '../../gl'
+import { O3D } from '../gl'
 import { html, render } from 'lit-html'
 import { CanvasTexture, PlaneBufferGeometry, Mesh, MeshBasicMaterial } from 'three'
 import rasterizeHTML from 'rasterizehtml/dist/rasterizeHTML.allinone'

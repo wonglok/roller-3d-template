@@ -1,8 +1,11 @@
 export { Router } from './Router.js'
 export { Boxes } from './Boxes'
 export { Box } from './Box'
+export { RefractionArea } from './RefractionArea'
+export { SkyPlane } from './SkyPlane'
 export { AppEntry } from './AppEntry'
-export { ScrollCanvas } from './ScrollCanvas/ScrollCanvas'
+export { ScrollCanvas } from './ScrollCanvas'
+
 import '../app-pages/page-404.js'
 import '../app-pages/page-home.js'
 import '../app-pages/page-red.js'
