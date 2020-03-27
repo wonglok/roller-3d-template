@@ -11,7 +11,9 @@ export class Box extends O3D {
       return
     }
     this.velocity = Number(this.props.velocity)
-    this.color.setStyle(this.props.color)
+    if (this.color) {
+      this.color.setStyle(this.props.color)
+    }
   }
 
   setup () {

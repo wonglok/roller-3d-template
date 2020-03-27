@@ -5,13 +5,13 @@ import { PlaneBufferGeometry, Vector2, TextureLoader } from 'three'
 
 export class RefractionArea extends O3D {
   static get observedAttributes () {
-    return ['color', 'velocity']
+    return ['blur']
   }
 
   onRefreshProps () {
-    if (!this.props) {
-      return
-    }
+    // if (this.props.blur && this.renderable) {
+    //   this.renderable.material.uniforms['blur'].value = this.props.blur
+    // }
   }
 
   setup () {
@@ -53,8 +53,8 @@ export class RefractionArea extends O3D {
     this.lookup('base').onLoop(() => {
       let time = window.performance.now() * 0.001
       if (this.renderable) {
-        if (this.renderable.material.uniforms['blur']) {
-          this.renderable.material.uniforms['blur'].value = 0 // Math.abs(Math.sin(time * 0.3))
+        if (this.renderable.material.uniforms['blur'] && this.props.blur) {
+          this.renderable.material.uniforms['blur'].value = this.props.blur // Math.abs(Math.sin(time * 0.3))
         }
         this.renderable.material.uniforms['time'].value = time
       }

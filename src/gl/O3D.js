@@ -41,7 +41,7 @@ export class O3D extends HTMLElement {
         return obj.shadowRoot.querySelector('#' + key)
       }
     })
-    this._ready = false
+    // this._ready = false
     this._eventCleaners = []
     this._name = this.constructor.name
 
@@ -118,7 +118,7 @@ export class O3D extends HTMLElement {
       if (this.onRefreshProps) {
         this.onRefreshProps()
         this.onRefreshInternalProps()
-        this._ready = true
+        // this._ready = true
         this.o3d.visible = true
       }
 
@@ -182,7 +182,19 @@ export class O3D extends HTMLElement {
   }
 
   getScreenAtDepth (depth) {
-    return getScreen({ camera: this.lookup('camera'), depth })
+    let camera = this.lookup('camera')
+    if (camera) {
+      return getScreen({ camera, depth })
+    } else {
+      return {
+        width: 0,
+        height: 0,
+        isVertical: true,
+        isLandscape: false,
+        min: 0,
+        max: 0
+      }
+    }
   }
 
   get screen () {
@@ -209,6 +221,9 @@ export class O3D extends HTMLElement {
     }
 
     // console.log(this.layout)
+    if (typeof this.layout.visible !== 'undefined') {
+      run(() => { this.o3d.visible = Parser.evaluate('' + (this.layout.visible), this) })
+    }
 
     run(() => { this.o3d.rotation.x = Parser.evaluate('' + (this.layout.rx || '0'), this) })
     run(() => { this.o3d.rotation.y = Parser.evaluate('' + (this.layout.ry || '0'), this) })
@@ -252,10 +267,10 @@ export class O3D extends HTMLElement {
 
   attributeChangedCallback (name, oldValue, newValue) {
     this.props[name] = newValue
-    if (this._ready) {
-      this.onRefreshProps()
-      this.onRefreshInternalProps()
-    }
+    this.onRefreshProps()
+    this.onRefreshInternalProps()
+    // if (this._ready) {
+    // }
     // this.props[name] = newValue
     // console.log(name, 'change attr', oldValue, newValue)
   }

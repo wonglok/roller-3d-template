@@ -95,7 +95,7 @@ let fragmentShader = glsl`
 
 
     vec2 distortion = ( texture2D( tDudv, vec2(fract(dlookup.x), fract(dlookup.y)) ).rg * 2.0 - 1.0 );
-    uv.xy += distortion * 3.5;
+    uv.xy += distortion;
 
     float amount = resolution.x * 0.5;
     vec4 base = vec4(0.0);
