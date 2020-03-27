@@ -95,6 +95,14 @@ export class AppEntry extends O3D {
       }
       i++
     }
+    window.ontouchstart = () => {
+      if (i%2 === 0) {
+        this.$router.navigate('/red')
+      } else {
+        this.$router.navigate('/')
+      }
+      i++
+    }
   }
 
   add () {
