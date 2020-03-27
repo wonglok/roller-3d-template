@@ -25,6 +25,7 @@ let fragmentShader = glsl`
 
   uniform vec3 color;
   uniform float time;
+  uniform float blur;
   uniform sampler2D tDiffuse;
   uniform sampler2D tDudv;
 
@@ -43,41 +44,41 @@ let fragmentShader = glsl`
 
   //https://github.com/Jam3/glsl-fast-gaussian-blur/blob/master/13.glsl
 
-  vec4 blurProj13 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
-    vec4 color = vec4(0.0);
-    vec4 off1 = vec4(1.411764705882353) * direction;
-    vec4 off2 = vec4(3.2941176470588234) * direction;
-    vec4 off3 = vec4(5.176470588235294) * direction;
-    color += texture2DProj(image, uv) * 0.1964825501511404;
-    color += texture2DProj(image, uv + (off1 / resolution)) * 0.2969069646728344;
-    color += texture2DProj(image, uv - (off1 / resolution)) * 0.2969069646728344;
-    color += texture2DProj(image, uv + (off2 / resolution)) * 0.09447039785044732;
-    color += texture2DProj(image, uv - (off2 / resolution)) * 0.09447039785044732;
-    color += texture2DProj(image, uv + (off3 / resolution)) * 0.010381362401148057;
-    color += texture2DProj(image, uv - (off3 / resolution)) * 0.010381362401148057;
-    return color;
-  }
+  // vec4 blurProj13 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
+  //   vec4 color = vec4(0.0);
+  //   vec4 off1 = vec4(1.411764705882353) * direction;
+  //   vec4 off2 = vec4(3.2941176470588234) * direction;
+  //   vec4 off3 = vec4(5.176470588235294) * direction;
+  //   color += texture2DProj(image, uv) * 0.1964825501511404;
+  //   color += texture2DProj(image, uv + (off1 / resolution)) * 0.2969069646728344;
+  //   color += texture2DProj(image, uv - (off1 / resolution)) * 0.2969069646728344;
+  //   color += texture2DProj(image, uv + (off2 / resolution)) * 0.09447039785044732;
+  //   color += texture2DProj(image, uv - (off2 / resolution)) * 0.09447039785044732;
+  //   color += texture2DProj(image, uv + (off3 / resolution)) * 0.010381362401148057;
+  //   color += texture2DProj(image, uv - (off3 / resolution)) * 0.010381362401148057;
+  //   return color;
+  // }
 
-  vec4 blurProj9 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
-    vec4 color = vec4(0.0);
-    vec4 off1 = vec4(1.3846153846) * direction;
-    vec4 off2 = vec4(3.2307692308) * direction;
-    color += texture2DProj(image, uv) * 0.2270270270;
-    color += texture2DProj(image, uv + (off1 / resolution)) * 0.3162162162;
-    color += texture2DProj(image, uv - (off1 / resolution)) * 0.3162162162;
-    color += texture2DProj(image, uv + (off2 / resolution)) * 0.0702702703;
-    color += texture2DProj(image, uv - (off2 / resolution)) * 0.0702702703;
-    return color;
-  }
+  // vec4 blurProj9 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
+  //   vec4 color = vec4(0.0);
+  //   vec4 off1 = vec4(1.3846153846) * direction;
+  //   vec4 off2 = vec4(3.2307692308) * direction;
+  //   color += texture2DProj(image, uv) * 0.2270270270;
+  //   color += texture2DProj(image, uv + (off1 / resolution)) * 0.3162162162;
+  //   color += texture2DProj(image, uv - (off1 / resolution)) * 0.3162162162;
+  //   color += texture2DProj(image, uv + (off2 / resolution)) * 0.0702702703;
+  //   color += texture2DProj(image, uv - (off2 / resolution)) * 0.0702702703;
+  //   return color;
+  // }
 
-  vec4 blurProj5 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
-    vec4 color = vec4(0.0);
-    vec4 off1 = vec4(1.3333333333333333) * direction;
-    color += texture2DProj(image, uv) * 0.29411764705882354;
-    color += texture2DProj(image, uv + (off1 / resolution)) * 0.35294117647058826;
-    color += texture2DProj(image, uv - (off1 / resolution)) * 0.35294117647058826;
-    return color;
-  }
+  // vec4 blurProj5 (sampler2D image, vec4 uv, vec4 resolution, vec4 direction) {
+  //   vec4 color = vec4(0.0);
+  //   vec4 off1 = vec4(1.3333333333333333) * direction;
+  //   color += texture2DProj(image, uv) * 0.29411764705882354;
+  //   color += texture2DProj(image, uv + (off1 / resolution)) * 0.35294117647058826;
+  //   color += texture2DProj(image, uv - (off1 / resolution)) * 0.35294117647058826;
+  //   return color;
+  // }
 
   void main (void) {
     float waveStrength = 0.5;
@@ -98,7 +99,38 @@ let fragmentShader = glsl`
 
     float amount = resolution.x * 0.5;
     vec4 base = vec4(0.0);
-    base += texture2DProj(tDiffuse, uv);
+    // Basic Reader
+    // base += texture2DProj(tDiffuse, uv);
+
+    // Quality of the Blur
+    // higher = slower but more pretty
+    float myBlur = 0.0;
+    if (blur < 0.01) {
+      base += texture2DProj(tDiffuse, uv);
+    } else {
+      myBlur = blur * 0.85;
+      const float radius = 5.0;
+      const float pi = 3.141592653589793;
+      const int r = int(radius);
+      const int nr = -r;
+      float k = 0.9342/(radius*radius);
+      float size = pow(radius * (1.15 - myBlur), 2.0);
+
+      for (int y = nr; y <= r; y++) {
+        for (int x = nr; x <= r; x++) {
+          float xx = float(x);
+          float yy = float(y);
+          float d = length(vec2(xx, yy));
+          if (d >= radius) {
+            continue;
+          }
+          float weight = k * (cos(pi*d/radius) + 1.0) / 2.0;
+          base += texture2DProj(tDiffuse, uv + vec4(xx, yy, 0.0, 0.0) / size) * weight;
+        }
+      }
+    }
+
+
 
     // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
     // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
@@ -119,6 +151,10 @@ var FastBlurShader = {
     },
 
     time: {
+      value: 0
+    },
+
+    blur: {
       value: 0
     },
 

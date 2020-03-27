@@ -52,11 +52,11 @@ export class SkyPlane extends O3D {
 
           vec2 swifting = vUv;
 
-          swifting.x = swifting.x + time * 0.1;
-          swifting.x = fract(swifting.x);
+          // swifting.x = swifting.x + time * 0.1;
+          // swifting.x = fract(swifting.x);
 
-          swifting.y = swifting.y + time * -0.0;
-          swifting.y = fract(swifting.y);
+          // swifting.y = swifting.y + time * -0.0;
+          // swifting.y = fract(swifting.y);
 
           vec4 color = texture2D(tex, swifting);
           gl_FragColor = vec4(color);

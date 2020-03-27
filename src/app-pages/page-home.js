@@ -27,6 +27,7 @@ export class Page extends O3D {
       <gl-o3d animated layout="moving3">
         <gl-box velocity=${0.01} color="#0000ff"></gl-box>
       </gl-o3d>
+
       <gl-sky-plane></gl-sky-plane>
       <gl-refraction-area></gl-refraction-area>
 
@@ -35,21 +36,22 @@ export class Page extends O3D {
 
   setup () {
     this.lookup('base').onLoop(() => {
+      let distnace = 70
       let time = window.performance.now() * 0.001
       let speed = 0.5
       this.layouts = {
         moving1: {
-          px: `50 + 50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
+          px: `${distnace} + 50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
           py: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`,
           pz: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`
         },
         moving2: {
-          px: `50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
+          px: `0.0 * ${distnace} + 50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
           py: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`,
           pz: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`
         },
         moving3: {
-          px: `-50 + 50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
+          px: `-${distnace} + 50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
           py: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`,
           pz: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`
         }
