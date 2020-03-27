@@ -20,7 +20,7 @@ export class Box extends O3D {
     this.velocity = 0
 
     // renderable
-    this.geometry = new BoxBufferGeometry(100, 100, 100, 30, 30, 30)
+    this.geometry = new BoxBufferGeometry(50, 50, 50, 30, 30, 30)
     this.material = new MeshBasicMaterial({ color: this.color, transparent: true, opacity: 0.5 })
     this.renderable = new LineSegments(this.geometry, this.material)
 

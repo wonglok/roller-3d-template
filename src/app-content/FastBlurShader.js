@@ -88,7 +88,6 @@ let fragmentShader = glsl`
     // // distortedUv.y = 1.0 - distortedUv.y;
     // vec2 distortion = ( texture2D( tDudv, distortedUv ).rg * 2.0 - 1.0 ) * waveStrength;
 
-
     vec4 uv = vec4(vUvRefraction);
     vec2 dlookup = vUv.xy - time * myspeed;
     dlookup.y *= resolution.x / resolution.y;
@@ -101,7 +100,7 @@ let fragmentShader = glsl`
     vec4 base = vec4(0.0);
     base += texture2DProj(tDiffuse, uv);
 
-    // base += 1.0 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
+    // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
     // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));
     // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(amount, -amount, amount, -amount));
     // base += 0.25 * blurProj5(tDiffuse, uv, vec4(resolution.x, resolution.y, resolution.x, resolution.y), vec4(-amount, amount, -amount, amount));

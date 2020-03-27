@@ -181,6 +181,9 @@ export class O3D extends HTMLElement {
     return val
   }
 
+  getScreenAtDepth (depth) {
+    return getScreen({ camera: this.lookup('camera'), depth })
+  }
 
   get screen () {
     return getScreen({ camera: this.lookup('camera'), depth: this.o3d.position.z })

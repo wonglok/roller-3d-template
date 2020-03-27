@@ -42,7 +42,9 @@ export class RefractionArea extends O3D {
     // })
 
     this.lookup('base').onResize(() => {
-      this.geometry = new PlaneBufferGeometry(this.screen.width, this.screen.height, 2, 2)
+      let depth = 100
+      let screen = this.getScreenAtDepth(depth)
+      this.geometry = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       this.remove()
       this.renderable = new Refractor(this.geometry, {
         color: this.color,
@@ -50,6 +52,7 @@ export class RefractionArea extends O3D {
         textureHeight: RES_SIZE * camera.aspect,
         shader: FastBlurShader
       })
+      this.renderable.position.z = depth
       this.add()
 
       this.renderable.material.uniforms['tDudv'].value = new TextureLoader().load('/texture/dudv/palms-only.jpg')

@@ -30,7 +30,6 @@ export class SkyPlane extends O3D {
 
 
     // renderable
-    this.geometry = new PlaneBufferGeometry(this.screen.max * 1.3, this.screen.max * 1.3, 2, 2)
     this.material = new ShaderMaterial({
       uniforms: {
         tex: { value: tex },
@@ -64,23 +63,28 @@ export class SkyPlane extends O3D {
         }
       `
     })
+
+    this.geometry = new PlaneBufferGeometry(this.screen.max, this.screen.max, 2, 2)
     this.renderable = new Mesh(this.geometry, this.material)
     this.lookup('base').onResize(() => {
-      this.geometry = new PlaneBufferGeometry(this.screen.max, this.screen.max, 4, 4)
+      this.renderable.position.z = -50
+      let screen = this.getScreenAtDepth(-50)
+      this.geometry = new PlaneBufferGeometry(screen.max, screen.max, 4, 4)
       this.renderable.geometry = this.geometry
+      this.geometry.needsUpdate = true
       this.renderable.needsUpdate = true
-    })
-    // this.renderable.rotateY(3.1415 * 0.5)
-    // geometry
-    this.geometry.computeBoundingSphere()
-    this.geometry.computeBoundingBox()
+      // this.renderable.rotateY(3.1415 * 0.5)
+      // geometry
+      this.geometry.computeBoundingSphere()
+      this.geometry.computeBoundingBox()
 
-    // size
-    this.$parent.$emit('size', {
-      radius: this.geometry.boundingSphere.radius,
-      width: Math.abs(this.geometry.boundingBox.min.x) + Math.abs(this.geometry.boundingBox.max.x),
-      height: Math.abs(this.geometry.boundingBox.min.y) + Math.abs(this.geometry.boundingBox.max.y),
-      depth: Math.abs(this.geometry.boundingBox.min.z) + Math.abs(this.geometry.boundingBox.max.z)
+      // size
+      this.$parent.$emit('size', {
+        radius: this.geometry.boundingSphere.radius,
+        width: Math.abs(this.geometry.boundingBox.min.x) + Math.abs(this.geometry.boundingBox.max.x),
+        height: Math.abs(this.geometry.boundingBox.min.y) + Math.abs(this.geometry.boundingBox.max.y),
+        depth: Math.abs(this.geometry.boundingBox.min.z) + Math.abs(this.geometry.boundingBox.max.z)
+      })
     })
 
     // looper
