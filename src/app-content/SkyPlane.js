@@ -3,7 +3,7 @@ import { Mesh, LinearFilter, NearestFilter, TextureLoader, PlaneBufferGeometry, 
 
 export class SkyPlane extends O3D {
   static get observedAttributes () {
-    return ['color', 'velocity']
+    return ['image']
   }
 
   onRefreshProps () {
@@ -21,8 +21,12 @@ export class SkyPlane extends O3D {
     // vars
     // this.color = new Color(this.props.color)
     // this.velocity = 0
+    let bgimg = `/texture/bg/white-flower.jpg`
+    if (this.props && this.props.image) {
+      bgimg = this.props.image
+    }
 
-    let tex = new TextureLoader().load(`/texture/bg/white-flower.jpg`)
+    let tex = new TextureLoader().load(bgimg)
     // tex.wrapS = MirroredRepeatWrapping
     // tex.wrapT = MirroredRepeatWrapping
     tex.magFilter = NearestFilter

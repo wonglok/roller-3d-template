@@ -22,7 +22,7 @@ export class Page extends O3D {
       </gl-o3d>
 
       <gl-o3d animated layout="moving4">
-        <gl-refraction-area blur="${this.blur}"></gl-refraction-area>
+        <gl-refraction-area image="/texture/dudv/waterdudv.jpg" blur="${this.blur}"></gl-refraction-area>
       </gl-o3d>
 
       <gl-sky-plane></gl-sky-plane>

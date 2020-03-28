@@ -5,7 +5,7 @@ import { PlaneBufferGeometry, Vector2, TextureLoader } from 'three'
 
 export class RefractionArea extends O3D {
   static get observedAttributes () {
-    return ['blur']
+    return ['blur', 'image']
   }
 
   onRefreshProps () {
@@ -32,7 +32,11 @@ export class RefractionArea extends O3D {
       this.renderable.position.z = depth
       this.add()
 
-      this.renderable.material.uniforms['tDudv'].value = new TextureLoader().load('/texture/bg/wavy.jpg')
+      let dudv = '/texture/dudv/waterdudv.jpg'
+      if (this.props && this.props.image) {
+        dudv = this.props.image
+      }
+      this.renderable.material.uniforms['tDudv'].value = new TextureLoader().load(dudv)
       this.renderable.material.uniforms['resolution'].value = new Vector2(RES_SIZE, RES_SIZE * camera.aspect)
 
       // geometry
