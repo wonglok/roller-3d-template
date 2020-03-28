@@ -28,6 +28,7 @@ export class SkyPlane extends O3D {
     tex.magFilter = NearestFilter
     tex.minFilter = NearestFilter
 
+    let glsl = v => v[0]
 
     // renderable
     this.material = new ShaderMaterial({
@@ -35,15 +36,14 @@ export class SkyPlane extends O3D {
         tex: { value: tex },
         time: { value: 0 }
       },
-      vertexShader: `
-
+      vertexShader: glsl`
         varying highp vec2 vUv;
         void main (void) {
           vUv = uv;
           gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
         }
       `,
-      fragmentShader: `
+      fragmentShader: glsl`
         uniform float time;
         uniform sampler2D tex;
         varying highp vec2 vUv;

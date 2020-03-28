@@ -1,5 +1,6 @@
 import { O3D } from '../gl'
 import { html, render } from 'lit-html'
+import { Scene } from 'three'
 
 export class Page extends O3D {
   static get observedAttributes () {
@@ -29,15 +30,20 @@ export class Page extends O3D {
   }
 
   setup () {
-    this.blur = 0.5
+    this.execute = true
+    this.scene = new Scene()
+    this.$parent.scene = this.scene
+
+    this.blur = 0.0
 
     this.lookup('base').onLoop(() => {
+      if (!this.execute) { return }
       let distnace = 100
       let time = window.performance.now() * 0.001
       let speed = 0.3
-      let openess = `${this.getScreenAtDepth(150).width} * ${Math.sin(time * speed)}`
+      let openess = `${this.getScreenAtDepth(150).width} * 0.5`
 
-      this.blur = Math.abs(Math.cos(time * speed * 4.0))
+      // this.blur = Math.abs(Math.cos(time * speed * 4.0))
 
       this.layouts = {
         moving1: {
@@ -57,18 +63,19 @@ export class Page extends O3D {
         },
         moving4: {
           visible: true,
-          // px: openess
+          px: openess
         }
       }
 
       this.syncDOM()
     })
   }
-
   add () {
+    this.scene.add(this.o3d)
   }
-
   remove () {
+    this.execute = false
+    this.scene.remove(this.o3d)
   }
 }
 
