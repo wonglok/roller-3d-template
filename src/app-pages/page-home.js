@@ -1,6 +1,6 @@
 import { O3D } from '../gl'
 import { html, render } from 'lit-html'
-import { Scene } from 'three'
+import { Scene, Color } from 'three'
 
 export class Page extends O3D {
   static get observedAttributes () {
@@ -32,6 +32,7 @@ export class Page extends O3D {
   setup () {
     this.execute = true
     this.scene = new Scene()
+    this.scene.background = new Color('#ffffff')
     this.$parent.scene = this.scene
 
     this.blur = 0.0

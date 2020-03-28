@@ -5,7 +5,7 @@ import { PlaneBufferGeometry, Vector2, TextureLoader } from 'three'
 
 export class RefractionArea extends O3D {
   static get observedAttributes () {
-    return ['blur', 'image']
+    return ['blur', 'depth', 'image']
   }
 
   onRefreshProps () {
@@ -19,7 +19,7 @@ export class RefractionArea extends O3D {
 
     this.lookup('base').onResize(() => {
       let camera = this.lookup('camera')
-      let depth = 150
+      let depth = Number(this.props.depth) || 150
       let screen = this.getScreenAtDepth(depth)
       this.geometry = new PlaneBufferGeometry(screen.width, screen.height, 2, 2)
       this.remove()

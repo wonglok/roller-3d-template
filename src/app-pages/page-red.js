@@ -1,6 +1,6 @@
 import { O3D } from '../gl'
 import { html, render } from 'lit-html'
-import { Scene } from 'three'
+import { Scene, Color } from 'three'
 
 export class Page extends O3D {
   static get observedAttributes () {
@@ -32,6 +32,7 @@ export class Page extends O3D {
   setup () {
     this.execute = true
     this.scene = new Scene()
+    this.scene.background = new Color('#ffffff')
     this.$parent.scene = this.scene
 
     this.blur = 0.95
@@ -40,24 +41,24 @@ export class Page extends O3D {
       if (!this.execute) { return }
       let distnace = 100
       let time = window.performance.now() * 0.001
-      let speed = 0.3
+      let speed = time * 3.141592 * 0.3
       let openess = `-0.5 * ${this.getScreenAtDepth(150).width}`
 
       this.layouts = {
         moving1: {
-          px: `${distnace} + 50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
-          py: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`,
-          pz: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`
+          px: `${distnace} + 50.0 * 0.5 * ${((Math.sin(speed) * Math.sin(speed)) - 0.5)}`,
+          py: `50.0 * 0.5 * ${Math.sin(speed) * Math.cos(speed)}`,
+          pz: `50.0 * 0.5 * ${Math.sin(speed) * Math.cos(speed)}`
         },
         moving2: {
-          px: `50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
-          py: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`,
-          pz: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`
+          px: `50.0 * 0.5 * ${((Math.sin(speed) * Math.sin(speed)) - 0.5)}`,
+          py: `50.0 * 0.5 * ${Math.sin(speed) * Math.cos(speed)}`,
+          pz: `50.0 * 0.5 * ${Math.sin(speed) * Math.cos(speed)}`
         },
         moving3: {
-          px: `-${distnace} + 50.0 * 0.5 * ${((Math.sin(time * 3.141592 * speed) * Math.sin(time * 3.141592 * speed)) - 0.5)}`,
-          py: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`,
-          pz: `50.0 * 0.5 * ${Math.sin(time * 3.141592 * speed) * Math.cos(time * 3.141592 * speed)}`
+          px: `-${distnace} + 50.0 * 0.5 * ${((Math.sin(speed) * Math.sin(speed)) - 0.5)}`,
+          py: `50.0 * 0.5 * ${Math.sin(speed) * Math.cos(speed)}`,
+          pz: `50.0 * 0.5 * ${Math.sin(speed) * Math.cos(speed)}`
         },
         moving4: {
           visible: true,

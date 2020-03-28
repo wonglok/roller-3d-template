@@ -16,10 +16,8 @@ export class ScrollCanvas extends O3D {
     super()
     this.canvas = document.createElement('canvas')
     this.dom = document.createElement('div')
-    this.wScale = 0.4
   }
   async renderHTML () {
-    console.log(this.props)
     this.screenPixelWidth = 500
     render(html`
       <style>
@@ -29,6 +27,7 @@ export class ScrollCanvas extends O3D {
           background: transparent;
         }
         .content {
+          white-space: pre-wrap;
           width: ${this.screenPixelWidth}px;
           background: rgba(0,0,0,0.3);
           color: black;
@@ -44,7 +43,7 @@ export class ScrollCanvas extends O3D {
     let height = res.image.height
     let aspect = height / width
     let canvas = document.createElement('canvas')
-    let scale = 2
+    let scale = 4
     canvas.width = width * scale
     canvas.height = height * scale
     let ctx = canvas.getContext('2d')
@@ -63,8 +62,16 @@ export class ScrollCanvas extends O3D {
     ctx.drawImage(res.image, sx, sy, sWidth, sHeight, dx, dy, dWidth, dHeight)
     // console.log(width, height, res.svg)
 
-    this.o3d.position.z = 70
-    let tWidth = this.screen.width * this.wScale;
+    // this.o3d.position.z = 70
+    console.log(this.screen.width)
+    let tWidth = this.screen.width * 0.9
+    if (tWidth > 180) {
+      tWidth = 180
+    }
+    if (tWidth > this.screen.width) {
+      tWidth = this.screen.width
+    }
+
     let texture = new CanvasTexture(canvas)
     let planeGeo = new PlaneBufferGeometry(tWidth, tWidth * aspect)
     planeGeo.computeBoundingBox()
