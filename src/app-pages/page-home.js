@@ -37,7 +37,7 @@ export class Page extends O3D {
       let speed = 0.3
       let openess = `${this.getScreenAtDepth(150).width} * ${Math.sin(time * speed)}`
 
-      this.blur = Math.cos(time * speed * 2.0)
+      this.blur = Math.cos(time * speed * 4.0)
 
       this.layouts = {
         moving1: {
