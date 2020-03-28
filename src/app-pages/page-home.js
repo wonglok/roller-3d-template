@@ -32,12 +32,12 @@ export class Page extends O3D {
     this.blur = 0.5
 
     this.lookup('base').onLoop(() => {
-      let distnace = 70
+      let distnace = 100
       let time = window.performance.now() * 0.001
       let speed = 0.3
       let openess = `${this.getScreenAtDepth(150).width} * ${Math.sin(time * speed)}`
 
-      this.blur = Math.cos(time * speed * 4.0)
+      this.blur = Math.abs(Math.cos(time * speed * 4.0))
 
       this.layouts = {
         moving1: {
@@ -57,7 +57,7 @@ export class Page extends O3D {
         },
         moving4: {
           visible: true,
-          px: openess
+          // px: openess
         }
       }
 
